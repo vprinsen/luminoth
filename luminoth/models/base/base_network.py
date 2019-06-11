@@ -191,7 +191,7 @@ class BaseNetwork(snt.AbstractModule):
         return inputs
 
     def get_checkpoint_file(self):
-        return get_checkpoint_file(self._architecture)
+        return get_checkpoint_file(self._architecture,self._config.get("weights_path"),self._config.get("download"))
 
     def _get_base_network_vars(self):
         """Returns a list of all the base network's variables."""

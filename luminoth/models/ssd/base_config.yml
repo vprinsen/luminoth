@@ -114,6 +114,8 @@ model:
     trainable: True
     # From which file to load the weights
     weights:
+    # From which path to load the weights.
+    weights_path:
     # Should we download weights if not available
     download: True
     arg_scope:

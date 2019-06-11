@@ -7,7 +7,6 @@ import tensorflow as tf
 
 from luminoth.utils.homedir import get_luminoth_home
 
-
 TENSORFLOW_OFFICIAL_ENDPOINT = 'http://download.tensorflow.org/models/'
 
 BASE_NETWORK_FILENAMES = {
@@ -89,7 +88,7 @@ def download_checkpoint(network, network_filename, checkpoint_path,
     tf.gfile.Remove(tarball_path)
 
 
-def get_checkpoint_file(network, checkpoint_path=DEFAULT_PATH):
+def get_checkpoint_file(network, checkpoint_path=DEFAULT_PATH, download=True):
     if checkpoint_path is None:
         checkpoint_path = DEFAULT_PATH
     checkpoint_path = get_checkpoint_path(path=checkpoint_path)
@@ -97,8 +96,14 @@ def get_checkpoint_file(network, checkpoint_path=DEFAULT_PATH):
     network_filename = '{}.ckpt'.format(network)
     checkpoint_file = os.path.join(checkpoint_path, network_filename)
     if network_filename not in files:
-        download_checkpoint(
-            network, network_filename, checkpoint_path, checkpoint_file
-        )
-
+        if(download):
+            download_checkpoint(
+                network, network_filename, checkpoint_path, checkpoint_file
+            )
+        else:
+            raise Exception (
+                'Could not find {} in {}. Set download flag True in config file to download.'.format(network_filename,checkpoint_path)
+            )
+    else:
+        tf.logging.info('Found checkpoint {} in {}.'.format(network_filename,checkpoint_path))
     return checkpoint_file
